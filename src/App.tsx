@@ -130,8 +130,8 @@ function App() {
                   bg-[#fafcff] px-4 py-8">
 
         <a href="#about" className="hover:underline">about</a>
+        <a href="https://blog.adamschaal.com" target="_blank" rel="noreferrer" className="hover:underline">blog</a>
         <a href="#contact" className="hover:underline">contact</a>
-        {/* <a href="#blog" className="hover:underline">blog</a> */}
         <a href="#talks" className="hover:underline">talks</a>
 
         <div className="border-l border-gray-300 my-3"></div>
@@ -205,19 +205,19 @@ function App() {
           </p>
         </section>
 
+        <section id="blog" className="mt-10">
+          <h2 className="font-bold text-xl mb-2">blog</h2>
+          <p>
+            Check out my <a href="https://blog.adamschaal.com" target="_blank" rel="noreferrer" className="text-blue-700 hover:underline">blog</a>.
+          </p>
+        </section>
+
         <section id="contact" className="mt-10">
           <h2 className="font-bold text-xl mb-2">contact</h2>
           <p>
             The easiest way to reach me is via my email at <a href="mailto:me@adamschaal.com" className="text-blue-700 hover:underline">me@adamschaal.com</a>.
           </p>
         </section>
-
-        {/* <section id="blog" className="mt-10">
-          <h2 className="font-bold text-xl mb-2">blog</h2>
-          <p>
-            Check out my <a href="https://blog.adamschaal.com" target="_blank" rel="noreferrer" className="text-blue-700 hover:underline">blog</a>.
-          </p>
-        </section>*/}
 
         <section id="talks" className="mt-10">
           <h2 className="font-bold text-xl mb-2">talks</h2>
