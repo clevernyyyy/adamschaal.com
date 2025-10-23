@@ -1,11 +1,127 @@
+import { useEffect, useRef, useState } from 'react'
 import adam from '/adam.png'
 import './App.css'
 
 function App() {
+  const jinjaRef = useRef<HTMLAnchorElement>(null)
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null)
+  const [targetPos, setTargetPos] = useState<{ x: number; y: number } | null>(null)
+  const [isEscaping, setIsEscaping] = useState(false)
+  const [homePos, setHomePos] = useState<{ x: number; y: number } | null>(null)
+  const returnTimeout = useRef<number | null>(null)
+
+  // Smooth animation loop
+  useEffect(() => {
+    let raf: number
+    const animate = () => {
+      if (pos && targetPos) {
+        const lerp = (a: number, b: number, t: number) => a + (b - a) * t
+        const newX = lerp(pos.x, targetPos.x, 0.15) // adjust t for speed
+        const newY = lerp(pos.y, targetPos.y, 0.15)
+        setPos({ x: newX, y: newY })
+      }
+      raf = requestAnimationFrame(animate)
+    }
+    raf = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(raf)
+  }, [pos, targetPos])
+
+  // Mouse proximity detection
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!jinjaRef.current) return
+      const rect = jinjaRef.current.getBoundingClientRect()
+      const mouseX = e.clientX
+      const mouseY = e.clientY
+      const elCenterX = rect.left + rect.width / 2
+      const elCenterY = rect.top + rect.height / 2
+      const dx = mouseX - elCenterX
+      const dy = mouseY - elCenterY
+      const dist = Math.sqrt(dx * dx + dy * dy)
+
+      if (!homePos) {
+        // Record original nav position
+        setHomePos({ x: rect.left, y: rect.top })
+      }
+
+      if (!isEscaping && dist < 50) {
+        // Start escaping
+        setIsEscaping(true)
+        setPos({ x: rect.left, y: rect.top })
+        setTargetPos({ x: rect.left, y: rect.top })
+      }
+
+      if (isEscaping) {
+        if (dist < 120) {
+          // Cancel any pending return
+          if (returnTimeout.current) {
+            clearTimeout(returnTimeout.current)
+            returnTimeout.current = null
+          }
+
+          // Move away from mouse
+          const angle = Math.atan2(dy, dx)
+          let moveX = (pos?.x ?? rect.left) - Math.cos(angle) * 40
+          let moveY = (pos?.y ?? rect.top) - Math.sin(angle) * 40
+
+          // Get current viewport dimensions
+          const viewportWidth = window.innerWidth
+          const viewportHeight = window.innerHeight - 50 // Shift viewport up by 50px
+          const elementWidth = rect.width
+          const elementHeight = rect.height
+
+          // Define safe margins from edges (in pixels)
+          const edgeMargin = 20
+
+          // Check if we're approaching edges and adjust direction accordingly
+          const isNearLeftEdge = moveX < edgeMargin
+          const isNearRightEdge = moveX > viewportWidth - elementWidth - edgeMargin
+          const isNearTopEdge = moveY < edgeMargin
+          const isNearBottomEdge = moveY > viewportHeight - elementHeight - edgeMargin
+
+          // If approaching edges, slide horizontally to stay within viewport
+          if (isNearLeftEdge || isNearRightEdge) {
+            // Slide right if near left edge, left if near right edge
+            moveX = isNearLeftEdge ? edgeMargin : viewportWidth - elementWidth - edgeMargin
+          }
+          
+          if (isNearTopEdge || isNearBottomEdge) {
+            // Slide down if near top edge, up if near bottom edge
+            moveY = isNearTopEdge ? edgeMargin : viewportHeight - elementHeight - edgeMargin
+          }
+
+          // Final clamping to ensure we stay within viewport bounds
+          const maxX = viewportWidth - elementWidth
+          const maxY = viewportHeight - elementHeight
+          const clampedX = Math.max(0, Math.min(moveX, maxX))
+          const clampedY = Math.max(0, Math.min(moveY, maxY))
+
+          setTargetPos({ x: clampedX, y: clampedY })
+        } else {
+          // If the mouse is far enough, start return timer
+          if (!returnTimeout.current) {
+            returnTimeout.current = window.setTimeout(() => {
+              if (homePos) {
+                setTargetPos(homePos)
+                // After reaching home, stop escaping
+                setTimeout(() => {
+                  setIsEscaping(false)
+                  setPos(null)
+                  setTargetPos(null)
+                }, 800) // time to settle in place
+              }
+            }, 1500) // wait before returning
+          }
+        }
+      }
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [isEscaping, pos, homePos])
+
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-6 py-8
-                font-sans text-gray-900
-                md:pl-48">
+    <div className="min-h-screen max-w-5xl mx-auto px-6 py-8 text-gray-900 md:pl-48">
   
       {/* Left vertical nav */}
       <aside className="flex flex-col space-y-2 text-blue-700 text-sm 
@@ -20,7 +136,6 @@ function App() {
 
         <div className="border-l border-gray-300 my-3"></div>
 
-
         <div className="flex items-center w-full pr-4">
           <span className="mr-2 text-gray-600">adam online</span>
           <div className="flex-1 border-t border-gray-300"></div>
@@ -34,18 +149,39 @@ function App() {
         <div className="border-l border-gray-300 my-3"></div>
 
         <div className="flex items-center w-full pr-4">
-          <span className="mr-2 text-gray-600">fun projects</span>
+          <span className="mr-2 text-gray-600">community</span>
+          <div className="flex-1 border-t border-gray-300"></div>
+        </div>
+
+        <a href="https://kernelcon.org" target="_blank" rel="noreferrer" className="hover:underline">kernelcon</a>
+        <a href="https://dc402.org" target="_blank" rel="noreferrer" className="hover:underline">defcon402</a>
+
+        <div className="border-l border-gray-300 my-3"></div>
+
+        <div id="fun-wrapper" className="flex items-center w-full pr-4">
+          <span id="fun-projects" className="mr-2 text-gray-600">fun projects</span>
           <div className="flex-1 border-t border-gray-300"></div>
         </div>
 
         <a href="https://nix.adamschaal.com" target="_blank" rel="noreferrer" className="hover:underline">nix</a>
-        <a href="https://kernelcon.org" target="_blank" rel="noreferrer" className="hover:underline">kernelcon</a>
-        <a href="https://dc402.org" target="_blank" rel="noreferrer" className="hover:underline">defcon402</a>
+        <a ref={jinjaRef} href="https://jinjabreadman.adamschaal.com" className="hover:underline"
+          style={
+            isEscaping && pos
+              ? {
+                  position: 'fixed',
+                  transform: `translate(${pos.x}px, ${pos.y}px)`,
+                  willChange: 'transform',
+                }
+              : {}
+          }
+        >
+          jinjabreadman
+        </a>
       </aside>
 
       {/* Main content */}
       <main className="prose prose-slate max-w-none">
-        <h1 className="text-3xl mb-4">adam <b>schaal</b></h1>
+        <h1 className="text-3xl mb-4 font-option-3">adam <b>schaal</b></h1>
 
         <img
           src={adam}
