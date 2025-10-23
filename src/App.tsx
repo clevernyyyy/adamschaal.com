@@ -131,7 +131,7 @@ function App() {
 
         <a href="#about" className="hover:underline">about</a>
         <a href="#contact" className="hover:underline">contact</a>
-        <a href="#blog" className="hover:underline">blog</a>
+        {/* <a href="#blog" className="hover:underline">blog</a> */}
         <a href="#talks" className="hover:underline">talks</a>
 
         <div className="border-l border-gray-300 my-3"></div>
@@ -212,12 +212,12 @@ function App() {
           </p>
         </section>
 
-        <section id="blog" className="mt-10">
+        {/* <section id="blog" className="mt-10">
           <h2 className="font-bold text-xl mb-2">blog</h2>
           <p>
             Check out my <a href="https://blog.adamschaal.com" target="_blank" rel="noreferrer" className="text-blue-700 hover:underline">blog</a>.
           </p>
-        </section>
+        </section>*/}
 
         <section id="talks" className="mt-10">
           <h2 className="font-bold text-xl mb-2">talks</h2>
