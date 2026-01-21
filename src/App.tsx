@@ -192,7 +192,23 @@ function App() {
         <section id="about">
           <h2 className="font-bold text-xl mb-2">about</h2>
           <p>
-          I am the creator and leader of the AWS SHINE team (Security Hub of Innovation and Efficiency). My team and I research, experiment with, and develop mechanisms and constructs to reinforce security at scale using Generative AI and deterministic automation. SHINE is composed of a select group of highly skilled security and software engineers, responsible for driving major efficiency gains across all phases of the builder SDLC and the security review process.
+            I am a Distinguished Engineer, AI Security at{' '}
+            <a
+              href="https://pixee.ai"
+              target="_blank"
+              rel="noreferrer"
+              className="text-blue-700 hover:underline"
+            >
+              Pixee
+            </a>
+            , where I focus on how generative AI and automation can fundamentally reshape how we secure software at scale.
+          </p>
+          <p className="mt-6">
+            Formerly, I created and led the AWS SHINE team (Security Hub of Innovation and Efficiency), researching,
+            experimenting with, and developing mechanisms to reinforce security at scale using generative AI and
+            deterministic automation. SHINE was composed of a select group of highly skilled security and software
+            engineers, responsible for driving major efficiency gains across all phases of the builder SDLC and the
+            security review process.
           </p>
           <p className="mt-6">
           Previously, I served as a Principal Security Researcher and later as a Director at Contrast Security, where I worked extensively with real-time application self-protection at runtime (RASP) and interactive application security testing (IAST) technologies. As Director of Enterprise Security, I oversaw Product Security, Cloud Security, Security Operations, and Incident Response.
