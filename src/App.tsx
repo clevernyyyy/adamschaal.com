@@ -166,7 +166,7 @@ function App() {
             setIsMobileMenuOpen(true)
           }
         }}
-        className="md:hidden absolute top-4 right-4 z-50 p-2 rounded-lg bg-[#fafcff] border border-slate-300 shadow-sm hover:bg-slate-50 active:bg-slate-100 transition-colors focus:outline-none touch-manipulation"
+        className="md:hidden absolute top-4 right-4 z-50 p-2 rounded-lg bg-white border border-slate-300 shadow-sm hover:bg-slate-50 active:bg-slate-100 transition-colors focus:outline-none touch-manipulation"
         style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
         aria-label="Toggle menu"
       >
