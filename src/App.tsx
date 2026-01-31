@@ -9,6 +9,8 @@ function App() {
   const [isEscaping, setIsEscaping] = useState(false)
   const [homePos, setHomePos] = useState<{ x: number; y: number } | null>(null)
   const returnTimeout = useRef<number | null>(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isMenuClosing, setIsMenuClosing] = useState(false)
 
   // Smooth animation loop
   useEffect(() => {
@@ -120,13 +122,125 @@ function App() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [isEscaping, pos, homePos])
 
+  // Helper function to close menu with animation
+  const closeMobileMenu = () => {
+    setIsMenuClosing(true)
+    setTimeout(() => {
+      setIsMobileMenuOpen(false)
+      setIsMenuClosing(false)
+    }, 300)
+  }
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      if (isMobileMenuOpen && !target.closest('nav') && !target.closest('button[aria-label="Toggle menu"]')) {
+        closeMobileMenu()
+      }
+    }
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('click', handleClickOutside)
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+      document.body.style.overflow = ''
+    }
+  }, [isMobileMenuOpen])
+
   return (
-    <div className="min-h-screen max-w-5xl mx-auto px-6 py-8 text-gray-900 md:pl-48">
+    <div className="min-h-screen max-w-5xl mx-auto px-6 py-8 text-gray-900 md:pl-48 relative">
   
-      {/* Left vertical nav */}
-      <aside className="flex flex-col space-y-2 text-blue-700 text-sm 
+      {/* Mobile menu button */}
+      <button
+        onClick={() => {
+          if (isMobileMenuOpen) {
+            closeMobileMenu()
+          } else {
+            setIsMobileMenuOpen(true)
+          }
+        }}
+        className="md:hidden absolute top-4 right-4 z-50 p-2 rounded-lg bg-[#fafcff] border border-slate-300 shadow-sm hover:bg-slate-50 active:bg-slate-100 transition-colors focus:outline-none touch-manipulation"
+        style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
+        aria-label="Toggle menu"
+      >
+        <svg
+          className="w-6 h-6 text-blue-700"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          {isMobileMenuOpen ? (
+            <path d="M6 18L18 6M6 6l12 12" />
+          ) : (
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          )}
+        </svg>
+      </button>
+
+      {/* Mobile dropdown menu */}
+      {(isMobileMenuOpen || isMenuClosing) && (
+        <>
+          <div 
+            className={`md:hidden fixed inset-0 z-30 bg-black/20 transition-opacity duration-300 ease-out ${isMenuClosing ? 'opacity-0' : 'opacity-100'}`}
+            onClick={closeMobileMenu}
+          ></div>
+          <div className={`md:hidden fixed inset-0 z-40 bg-[#fafcff] pt-16 px-6 pb-8 overflow-y-auto mobile-menu-container ${isMenuClosing ? 'mobile-menu-slide-up' : 'mobile-menu-slide-down'}`}>
+            <nav className="flex flex-col space-y-2 text-blue-700 text-sm">
+            <a href="#about" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>about</a>
+            <a href="https://blog.adamschaal.com" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>blog</a>
+            <a href="#contact" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>contact</a>
+            <a href="#talks" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>talks</a>
+
+            <div className="border-l border-gray-300 my-3"></div>
+
+            <div className="flex items-center w-full pr-4">
+              <span className="mr-2 text-gray-600">adam online</span>
+              <div className="flex-1 border-t border-gray-300"></div>
+            </div>
+
+            <a href="https://github.com/clevernyyyy" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>github</a>
+            <a href="https://twitter.com/clevernyyyy" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>twitter</a>
+            <a href="https://bsky.app/profile/appsec.bsky.social" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>bluesky</a>
+            <a href="https://www.instagram.com/clevernyyyy/" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>instagram</a>
+            <a href="https://offsec.sh" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>resume</a>
+           
+            <div className="border-l border-gray-300 my-3"></div>
+
+            <div className="flex items-center w-full pr-4">
+              <span className="mr-2 text-gray-600">community</span>
+              <div className="flex-1 border-t border-gray-300"></div>
+            </div>
+
+            <a href="https://kernelcon.org" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>kernelcon</a>
+            <a href="https://dc402.org" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>defcon402</a>
+
+            <div className="border-l border-gray-300 my-3"></div>
+
+            <div id="fun-wrapper" className="flex items-center w-full pr-4">
+              <span id="fun-projects" className="mr-2 text-gray-600">fun projects</span>
+              <div className="flex-1 border-t border-gray-300"></div>
+            </div>
+
+            <a href="https://nix.adamschaal.com" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>nix</a>
+            </nav>
+          </div>
+        </>
+      )}
+
+      {/* Left vertical nav - Desktop only */}
+      <aside className="hidden md:flex flex-col space-y-2 text-blue-700 text-sm 
                   border-r border-slate-300 border-dotted 
-                  md:fixed md:top-0 md:left-0 md:h-screen md:w-44
+                  fixed top-0 left-0 h-screen w-44
                   bg-[#fafcff] px-4 py-8">
 
         <a href="#about" className="hover:underline">about</a>
@@ -144,6 +258,7 @@ function App() {
         <a href="https://github.com/clevernyyyy" target="_blank" rel="noreferrer" className="hover:underline">github</a>
         <a href="https://twitter.com/clevernyyyy" target="_blank" rel="noreferrer" className="hover:underline">twitter</a>
         <a href="https://bsky.app/profile/appsec.bsky.social" target="_blank" rel="noreferrer" className="hover:underline">bluesky</a>
+        <a href="https://www.instagram.com/clevernyyyy/" target="_blank" rel="noreferrer" className="hover:underline">instagram</a>
         <a href="https://offsec.sh" target="_blank" rel="noreferrer" className="hover:underline">resume</a>
        
         <div className="border-l border-gray-300 my-3"></div>
@@ -164,7 +279,7 @@ function App() {
         </div>
 
         <a href="https://nix.adamschaal.com" target="_blank" rel="noreferrer" className="hover:underline">nix</a>
-        <a ref={jinjaRef} href="https://jinjabreadman.adamschaal.com" className="hover:underline"
+        <a ref={jinjaRef} href="https://jinjabreadman.adamschaal.com" className="hidden md:block hover:underline"
           style={
             isEscaping && pos
               ? {
@@ -239,18 +354,18 @@ function App() {
           <h2 className="font-bold text-xl mb-2">talks</h2>
           <p>Below are my conference appearances, shown in reverse chronological order.</p>
           <ul className="list-disc pl-5 mt-2 space-y-1">
-            <li><a href="https://www.brucon.org/conference" target="_blank" rel="noreferrer">BruCON 0x11</a>. September 26, 2025. Mechelen, Belgium.</li>
-            <li><a href="https://www.shmoocon.org/speakers/#malwarecabal" target="_blank" rel="noreferrer">ShmooCon</a>. January 11, 2025. Washington D.C.</li>
-            <li><a href="https://www.nohat.it/hall-of-fame" target="_blank" rel="noreferrer">No Hat Computer Security Conference</a>. October 19, 2024. Bergamo, Italy.</li>
+            <li><a href="https://www.brucon.org/conference" target="_blank" rel="noreferrer">BruCON 0x11</a>. September 26, 2025. Mechelen, Belgium. <a href="https://www.youtube.com/watch?v=aBsf75c1zqw" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs ml-1">youtube</a></li>
+            <li><a href="https://www.shmoocon.org/speakers/#malwarecabal" target="_blank" rel="noreferrer">ShmooCon</a>. January 11, 2025. Washington D.C. <a href="https://www.youtube.com/watch?v=ELuu4glRl7I" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs ml-1">youtube</a></li>
+            <li><a href="https://www.nohat.it/hall-of-fame" target="_blank" rel="noreferrer">No Hat Computer Security Conference</a>. October 19, 2024. Bergamo, Italy. <a href="https://www.youtube.com/watch?v=zR1EiOUTvrg" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs ml-1">youtube</a> <a href="https://www.youtube.com/watch?v=3L7n20xkEd4" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs ml-1">interview</a></li>
             <li><a href="https://locomocosec.com" target="_blank" rel="noreferrer">LocoMoco Security Conference</a>. July 17, 2024. Kaua'i, Hawai'i.</li>
-            <li><a href="https://events.ccc.de/camp/2023/infos" target="_blank" rel="noreferrer">Chaos Communication Camp</a>. August 17, 2023. Brandenburg, Germany.</li>
-            <li><a href="https://lascon.org/past-lascon-2022" target="_blank" rel="noreferrer">LASCON 2022</a>. October 28, 2022. Austin, Texas.</li>
-            <li><a href="https://events.linuxfoundation.org/archive/2021/lf-member-summit" target="_blank" rel="noreferrer">The Linux Foundation Member Summit</a>. November 2, 2021. Napa Valley, California.</li>
+            <li><a href="https://events.ccc.de/camp/2023/infos" target="_blank" rel="noreferrer">Chaos Communication Camp</a>. August 17, 2023. Brandenburg, Germany. <a href="https://www.youtube.com/watch?v=hnBmS4wqW_Y" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs ml-1">youtube</a></li>
+            <li><a href="https://lascon.org/past-lascon-2022" target="_blank" rel="noreferrer">LASCON 2022</a>. October 28, 2022. Austin, Texas. <a href="https://www.youtube.com/watch?v=z3VXjz4buJE" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs ml-1">youtube</a></li>
+            <li><a href="https://events.linuxfoundation.org/archive/2021/lf-member-summit" target="_blank" rel="noreferrer">The Linux Foundation Member Summit</a>. November 2, 2021. Napa Valley, California. <a href="https://www.youtube.com/watch?v=pvn9_LMsWAk" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs ml-1">youtube</a></li>
             <li><a href="https://lascon.org/past-lascon-2022" target="_blank" rel="noreferrer">LASCON 2021</a>. October 29, 2021. Austin, Texas.</li>
             <li><a href="https://blueteamcon.com/btc-history/blue-team-con-2021-schedule" target="_blank" rel="noreferrer">Blue Team Con</a>. August 29, 2021. Chicago, Illinois.</li>
-            <li><a href="https://www.appsecvillage.com/events/dc-2021" target="_blank" rel="noreferrer">DEF CON 29 AppSec Village</a>. August 7, 2021. Las Vegas, Nevada.</li>
-            <li><a href="https://absoluteappsec.com/cons/midwinter-2020" target="_blank" rel="noreferrer">Midwinter Night's Con</a> by Absolute AppSec. December 16, 2020. Remote.</li>
-            <li><a href="https://www.bsidessatx.com/schedule-2020.html" target="_blank" rel="noreferrer">Bsides SATX</a>. July 11, 2020. San Antonio, Texas.</li>
+            <li><a href="https://www.appsecvillage.com/events/dc-2021" target="_blank" rel="noreferrer">DEF CON 29 AppSec Village</a>. August 7, 2021. Las Vegas, Nevada. <a href="https://www.youtube.com/watch?v=fCaglk1bpmI" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs ml-1">youtube</a></li>
+            <li><a href="https://absoluteappsec.com/cons/midwinter-2020" target="_blank" rel="noreferrer">Midwinter Night's Con</a> by Absolute AppSec. December 16, 2020. Remote. <a href="https://www.youtube.com/watch?v=iuiYynAqiR8" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs ml-1">youtube</a></li>
+            <li><a href="https://www.bsidessatx.com/schedule-2020.html" target="_blank" rel="noreferrer">Bsides SATX</a>. July 11, 2020. San Antonio, Texas. <a href="https://www.youtube.com/watch?v=iJXY7OdiWmE" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs ml-1">youtube</a></li>
             <li><a href="https://x.com/CircleCityCon" target="_blank" rel="noreferrer">Circle City Con</a>. June 14, 2020. Indianapolis, Indiana.</li>
             {/* <li><a href="" target="_blank" rel="noreferrer"></a></li>
             <li><a href="" target="_blank" rel="noreferrer"></a></li> */}

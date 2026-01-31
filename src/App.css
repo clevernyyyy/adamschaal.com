@@ -47,3 +47,55 @@ img[alt="Adam Schaal"] {
   width: 300px;
   max-width: 100%;
 }
+
+/* Mobile menu animations */
+.mobile-menu-container {
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.mobile-menu-slide-down {
+  animation: slideDown 0.3s ease-out;
+}
+
+.mobile-menu-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+/* Remove orange touch highlight on mobile */
+.touch-manipulation {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  outline: none !important;
+  -webkit-touch-callout: none;
+}
+
+/* Remove focus outline on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  button:focus,
+  a:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
