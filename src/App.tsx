@@ -232,6 +232,7 @@ function App() {
             </div>
 
             <a href="https://nix.adamschaal.com" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>nix</a>
+            <a href="https://tanks.adamschaal.com" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>tanks</a>
             </nav>
           </div>
         </>
@@ -279,6 +280,7 @@ function App() {
         </div>
 
         <a href="https://nix.adamschaal.com" target="_blank" rel="noreferrer" className="hover:underline">nix</a>
+        <a href="https://tanks.adamschaal.com" target="_blank" rel="noreferrer" className="hover:underline">tanks</a>
         <a ref={jinjaRef} href="https://jinjabreadman.adamschaal.com" className="hidden md:block hover:underline"
           style={
             isEscaping && pos
