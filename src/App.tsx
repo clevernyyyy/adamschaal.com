@@ -7,6 +7,7 @@ function App() {
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null)
   const [targetPos, setTargetPos] = useState<{ x: number; y: number } | null>(null)
   const [isEscaping, setIsEscaping] = useState(false)
+  const [isReturning, setIsReturning] = useState(false)
   const [homePos, setHomePos] = useState<{ x: number; y: number } | null>(null)
   const returnTimeout = useRef<number | null>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -18,15 +19,23 @@ function App() {
     const animate = () => {
       if (pos && targetPos) {
         const lerp = (a: number, b: number, t: number) => a + (b - a) * t
-        const newX = lerp(pos.x, targetPos.x, 0.15) // adjust t for speed
-        const newY = lerp(pos.y, targetPos.y, 0.15)
+        const t = isReturning ? 0.1 : 0.2
+        const newX = lerp(pos.x, targetPos.x, t)
+        const newY = lerp(pos.y, targetPos.y, t)
+        if (isReturning && Math.abs(newX - targetPos.x) < 0.5 && Math.abs(newY - targetPos.y) < 0.5) {
+          setIsEscaping(false)
+          setIsReturning(false)
+          setPos(null)
+          setTargetPos(null)
+          return
+        }
         setPos({ x: newX, y: newY })
       }
       raf = requestAnimationFrame(animate)
     }
     raf = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(raf)
-  }, [pos, targetPos])
+  }, [pos, targetPos, isReturning])
 
   // Mouse proximity detection
   useEffect(() => {
@@ -55,48 +64,41 @@ function App() {
 
       if (isEscaping) {
         if (dist < 120) {
-          // Cancel any pending return
+          // Cancel any pending or active return
           if (returnTimeout.current) {
             clearTimeout(returnTimeout.current)
             returnTimeout.current = null
           }
+          setIsReturning(false)
 
           // Move away from mouse
           const angle = Math.atan2(dy, dx)
-          let moveX = (pos?.x ?? rect.left) - Math.cos(angle) * 40
-          let moveY = (pos?.y ?? rect.top) - Math.sin(angle) * 40
+          const curX = pos?.x ?? rect.left
+          const curY = pos?.y ?? rect.top
 
-          // Get current viewport dimensions
           const viewportWidth = window.innerWidth
-          const viewportHeight = window.innerHeight - 50 // Shift viewport up by 50px
+          const viewportHeight = window.innerHeight - 50
           const elementWidth = rect.width
           const elementHeight = rect.height
-
-          // Define safe margins from edges (in pixels)
           const edgeMargin = 20
-
-          // Check if we're approaching edges and adjust direction accordingly
-          const isNearLeftEdge = moveX < edgeMargin
-          const isNearRightEdge = moveX > viewportWidth - elementWidth - edgeMargin
-          const isNearTopEdge = moveY < edgeMargin
-          const isNearBottomEdge = moveY > viewportHeight - elementHeight - edgeMargin
-
-          // If approaching edges, slide horizontally to stay within viewport
-          if (isNearLeftEdge || isNearRightEdge) {
-            // Slide right if near left edge, left if near right edge
-            moveX = isNearLeftEdge ? edgeMargin : viewportWidth - elementWidth - edgeMargin
-          }
-          
-          if (isNearTopEdge || isNearBottomEdge) {
-            // Slide down if near top edge, up if near bottom edge
-            moveY = isNearTopEdge ? edgeMargin : viewportHeight - elementHeight - edgeMargin
-          }
-
-          // Final clamping to ensure we stay within viewport bounds
           const maxX = viewportWidth - elementWidth
           const maxY = viewportHeight - elementHeight
-          const clampedX = Math.max(0, Math.min(moveX, maxX))
-          const clampedY = Math.max(0, Math.min(moveY, maxY))
+
+          // Wall repulsion: grows as element nears each edge, deflects along walls
+          const wallZone = edgeMargin * 4
+          const wallStrength = 50
+          const wallForceX =
+            curX < wallZone ? wallStrength * (1 - curX / wallZone) :
+            curX > maxX - wallZone ? -wallStrength * (1 - (maxX - curX) / wallZone) : 0
+          const wallForceY =
+            curY < wallZone ? wallStrength * (1 - curY / wallZone) :
+            curY > maxY - wallZone ? -wallStrength * (1 - (maxY - curY) / wallZone) : 0
+
+          let moveX = curX - Math.cos(angle) * 65 + wallForceX
+          let moveY = curY - Math.sin(angle) * 65 + wallForceY
+
+          const clampedX = Math.max(edgeMargin, Math.min(moveX, maxX - edgeMargin))
+          const clampedY = Math.max(edgeMargin, Math.min(moveY, maxY - edgeMargin))
 
           setTargetPos({ x: clampedX, y: clampedY })
         } else {
@@ -104,15 +106,11 @@ function App() {
           if (!returnTimeout.current) {
             returnTimeout.current = window.setTimeout(() => {
               if (homePos) {
+                setIsReturning(true)
                 setTargetPos(homePos)
-                // After reaching home, stop escaping
-                setTimeout(() => {
-                  setIsEscaping(false)
-                  setPos(null)
-                  setTargetPos(null)
-                }, 800) // time to settle in place
               }
-            }, 1500) // wait before returning
+              returnTimeout.current = null
+            }, 1500)
           }
         }
       }
@@ -120,7 +118,7 @@ function App() {
 
     window.addEventListener('mousemove', handleMouseMove)
     return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [isEscaping, pos, homePos])
+  }, [isEscaping, isReturning, pos, homePos])
 
   // Helper function to close menu with animation
   const closeMobileMenu = () => {
@@ -286,6 +284,8 @@ function App() {
             isEscaping && pos
               ? {
                   position: 'fixed',
+                  left: 0,
+                  top: 0,
                   transform: `translate(${pos.x}px, ${pos.y}px)`,
                   willChange: 'transform',
                 }
