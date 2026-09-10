@@ -379,6 +379,13 @@ function App() {
             <li><a href="https://www.snowfroc.com" target="_blank" rel="noreferrer">SnowFroc</a>. March 12, 2020. Denver, Colorado.</li>
           </ul>
         </section>
+
+        <section id="slide-decks" className="mt-10">
+          <h2 className="font-bold text-xl mb-2">slide decks</h2>
+          <ul className="list-disc pl-5 mt-2 space-y-1">
+            <li><a href="/s/dont-pick-a-lane.pdf" target="_blank" rel="noreferrer" className="text-blue-700 hover:underline">Don't Pick a Lane Just Yet.</a></li>
+          </ul>
+        </section>
       </main>
     </div>
   )
