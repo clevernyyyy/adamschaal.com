@@ -384,6 +384,7 @@ function App() {
           <h2 className="font-bold text-xl mb-2">slide decks</h2>
           <ul className="list-disc pl-5 mt-2 space-y-1">
             <li><a href="/s/dont-pick-a-lane.pdf" target="_blank" rel="noreferrer" className="text-blue-700 hover:underline">Don't Pick a Lane Just Yet.</a></li>
+            <li><a href="/s/too-big-to-review.pdf" target="_blank" rel="noreferrer" className="text-blue-700 hover:underline">Too Big to Review.</a></li>
           </ul>
         </section>
       </main>
