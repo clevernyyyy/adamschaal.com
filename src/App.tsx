@@ -356,6 +356,7 @@ function App() {
           <h2 className="font-bold text-xl mb-2">talks</h2>
           <p>Below are my conference appearances, shown in reverse chronological order.</p>
           <ul className="list-disc pl-5 mt-2 space-y-1">
+            <li><a href="https://owasp.org/www-chapter-san-francisco/" target="_blank" rel="noreferrer">OWASP Global AppSec</a>. November 5-6, 2027. San Francisco, California. (Accepted)</li>
             <li><a href="https://lascon.org" target="_blank" rel="noreferrer">LASCON 2026</a>. October 29, 2026. Austin, Texas. (Accepted)</li>
             <li><a href="https://grrcon.com" target="_blank" rel="noreferrer">GrrCON</a>. September 24, 2026. Grand Rapids, Michigan. (Accepted)</li>
             <li><a href="https://blueteamcon.com" target="_blank" rel="noreferrer">Blue Team Con</a>. September 10, 2026. Chicago, Illinois.</li>
