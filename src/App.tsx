@@ -358,7 +358,7 @@ function App() {
           <ul className="list-disc pl-5 mt-2 space-y-1">
             <li><a href="https://owasp.org/www-chapter-san-francisco/" target="_blank" rel="noreferrer">OWASP Global AppSec</a>. November 5-6, 2027. San Francisco, California. (Accepted)</li>
             <li><a href="https://lascon.org" target="_blank" rel="noreferrer">LASCON 2026</a>. October 29, 2026. Austin, Texas. (Accepted)</li>
-            <li><a href="https://grrcon.com" target="_blank" rel="noreferrer">GrrCON</a>. September 24, 2026. Grand Rapids, Michigan. (Accepted)</li>
+            <li><a href="https://grrcon.com" target="_blank" rel="noreferrer">GrrCON</a>. September 24, 2026. Grand Rapids, Michigan.</li>
             <li><a href="https://blueteamcon.com" target="_blank" rel="noreferrer">Blue Team Con</a>. September 10, 2026. Chicago, Illinois.</li>
             <li><a href="https://www.hobocon.com" target="_blank" rel="noreferrer">Hobocon</a>. July 18, 2026. Conference on a Train (Kansas City → Chicago).</li>
             <li><a href="https://www.brucon.org/conference" target="_blank" rel="noreferrer">BruCON 0x11</a>. September 26, 2025. Mechelen, Belgium. <a href="https://www.youtube.com/watch?v=aBsf75c1zqw" target="_blank" rel="noreferrer" className="text-blue-600 hover:underline text-xs ml-1">youtube</a></li>
@@ -386,6 +386,7 @@ function App() {
           <ul className="list-disc pl-5 mt-2 space-y-1">
             <li><a href="/s/dont-pick-a-lane.pdf" target="_blank" rel="noreferrer" className="text-blue-700 hover:underline">Don't Pick a Lane Just Yet.</a></li>
             <li><a href="/s/too-big-to-review.pdf" target="_blank" rel="noreferrer" className="text-blue-700 hover:underline">Too Big to Review.</a></li>
+            <li><a href="/s/my-bed-tried-to-freeze-me-i-rooted-it.pdf" target="_blank" rel="noreferrer" className="text-blue-700 hover:underline">My Bed Tried to Freeze Me; I Rooted It.</a></li>
           </ul>
         </section>
       </main>
