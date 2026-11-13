@@ -355,8 +355,10 @@ function App() {
             The easiest way to reach me is via my email at <a href="mailto:me@adamschaal.com" className="text-blue-700 hover:underline">me@adamschaal.com</a>.
           </p>
           <p className="mt-4">
-            <strong>Invite me to speak.</strong> I talk about AI in application security, security automation at scale, and
-            hardware hacking. If you're running a conference, meetup, or podcast, <a href="mailto:me@adamschaal.com?subject=Speaking%20invitation" className="text-blue-700 hover:underline">email me</a> with
+            <strong>Invite me to speak.</strong> Most of my recent talks are about AI in Application Security: where LLMs
+            fail when they triage and fix vulnerabilities, how to test AI features beyond the OWASP LLM Top
+            10, and how to build agentic tooling that engineers can trust. I also speak on security automation at scale
+            and hardware hacking. If you're running a conference, meetup, or podcast, <a href="mailto:me@adamschaal.com?subject=Speaking%20invitation" className="text-blue-700 hover:underline">email me</a> with
             the event, date, and audience. You can see past talks and slides <a href="#talks" className="text-blue-700 hover:underline">below</a>.
           </p>
         </section>
