@@ -121,3 +121,12 @@ button[aria-label="Toggle menu"] {
   background: #93c5fd;
   border-radius: 4px;
 }
+
+/* GitHub mark in the stats card; a class beats index.css's unlayered `a` color */
+.github-mark {
+  color: #111827;
+  transition: color 0.15s;
+}
+.github-mark:hover {
+  color: #1d4ed8;
+}
