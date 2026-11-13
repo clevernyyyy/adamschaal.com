@@ -224,6 +224,7 @@ function App() {
 
             <a href="https://kernelcon.org" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>kernelcon</a>
             <a href="https://dc402.org" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>defcon402</a>
+            <a href="https://locomocosec.com" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>locomocosec</a>
 
             <div className="border-l border-gray-300 my-3"></div>
 
@@ -273,6 +274,7 @@ function App() {
 
         <a href="https://kernelcon.org" target="_blank" rel="noreferrer" className="hover:underline">kernelcon</a>
         <a href="https://dc402.org" target="_blank" rel="noreferrer" className="hover:underline">defcon402</a>
+        <a href="https://locomocosec.com" target="_blank" rel="noreferrer" className="hover:underline">locomocosec</a>
 
         <div className="border-l border-gray-300 my-3"></div>
 
