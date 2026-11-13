@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import adam from '/adam.png'
 import './App.css'
+import RecentPosts from './RecentPosts'
+import Stats from './Stats'
 
 function App() {
   const jinjaRef = useRef<HTMLAnchorElement>(null)
@@ -207,7 +209,8 @@ function App() {
             </div>
 
             <a href="https://github.com/clevernyyyy" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>github</a>
-            <a href="https://twitter.com/clevernyyyy" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>twitter</a>
+            <a href="https://www.linkedin.com/in/adamschaal/" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>linkedin</a>
+            <a href="https://x.com/clevernyyyy" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>x</a>
             <a href="https://bsky.app/profile/appsec.bsky.social" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>bluesky</a>
             <a href="https://www.instagram.com/clevernyyyy/" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>instagram</a>
             <a href="https://offsec.sh" target="_blank" rel="noreferrer" className="hover:underline py-2 touch-manipulation" style={{ WebkitTapHighlightColor: 'transparent' }} onClick={closeMobileMenu}>resume</a>
@@ -255,7 +258,8 @@ function App() {
         </div>
 
         <a href="https://github.com/clevernyyyy" target="_blank" rel="noreferrer" className="hover:underline">github</a>
-        <a href="https://twitter.com/clevernyyyy" target="_blank" rel="noreferrer" className="hover:underline">twitter</a>
+        <a href="https://www.linkedin.com/in/adamschaal/" target="_blank" rel="noreferrer" className="hover:underline">linkedin</a>
+        <a href="https://x.com/clevernyyyy" target="_blank" rel="noreferrer" className="hover:underline">x</a>
         <a href="https://bsky.app/profile/appsec.bsky.social" target="_blank" rel="noreferrer" className="hover:underline">bluesky</a>
         <a href="https://www.instagram.com/clevernyyyy/" target="_blank" rel="noreferrer" className="hover:underline">instagram</a>
         <a href="https://offsec.sh" target="_blank" rel="noreferrer" className="hover:underline">resume</a>
@@ -340,9 +344,7 @@ function App() {
 
         <section id="blog" className="mt-10">
           <h2 className="font-bold text-xl mb-2">blog</h2>
-          <p>
-            Check out my <a href="https://blog.adamschaal.com" target="_blank" rel="noreferrer" className="text-blue-700 hover:underline">blog</a>.
-          </p>
+          <RecentPosts />
         </section>
 
         <section id="contact" className="mt-10">
@@ -350,6 +352,16 @@ function App() {
           <p>
             The easiest way to reach me is via my email at <a href="mailto:me@adamschaal.com" className="text-blue-700 hover:underline">me@adamschaal.com</a>.
           </p>
+          <p className="mt-4">
+            <strong>Invite me to speak.</strong> I talk about AI in application security, security automation at scale, and
+            hardware hacking. If you're running a conference, meetup, or podcast, <a href="mailto:me@adamschaal.com?subject=Speaking%20invitation" className="text-blue-700 hover:underline">email me</a> with
+            the event, date, and audience. You can see past talks and slides <a href="#talks" className="text-blue-700 hover:underline">below</a>.
+          </p>
+        </section>
+
+        <section id="stats" className="mt-10">
+          <h2 className="font-bold text-xl mb-2">stats</h2>
+          <Stats />
         </section>
 
         <section id="talks" className="mt-10">

@@ -106,3 +106,18 @@ button[aria-label="Toggle menu"] {
     box-shadow: none !important;
   }
 }
+/* Always-visible scrollbar on the flight list so it reads as scrollable */
+.flight-list {
+  scrollbar-width: thin;
+  scrollbar-color: #93c5fd #f1f5f9;
+}
+.flight-list::-webkit-scrollbar {
+  width: 8px;
+}
+.flight-list::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+.flight-list::-webkit-scrollbar-thumb {
+  background: #93c5fd;
+  border-radius: 4px;
+}

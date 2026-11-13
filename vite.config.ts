@@ -7,4 +7,13 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     react()],
+  server: {
+    proxy: {
+      // Local blog dev server (npm run dev in blog.adamschaal.com)
+      '/blog-feed': {
+        target: 'http://localhost:8080',
+        rewrite: (path) => path.replace(/^\/blog-feed/, ''),
+      },
+    },
+  },
 })
